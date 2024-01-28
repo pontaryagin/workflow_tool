@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+import { Workflow } from "./workflow"
 
 async function submitAction(formData: FormData) {
   "use server"
@@ -29,17 +30,11 @@ async function logout(formData: FormData){
   cookies().delete("name")
 }
 
-
-type Checked = DropdownMenuCheckboxItemProps["checked"]
-export function DropdownMenuCheckboxes({name}: {name: string}) {
-  // const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
-  // const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
-  // const [showPanel, setShowPanel] = React.useState<Checked>(false)
- 
-  return (
+export function DropdownMenuCheckboxes({username}: {username: string}) {
+  return <>
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Badge>{name}</Badge>
+        <Badge>{username}</Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
@@ -49,27 +44,34 @@ export function DropdownMenuCheckboxes({name}: {name: string}) {
         </DropdownMenuLabel>
       </DropdownMenuContent>
     </DropdownMenu>
+  </>
+}
 
-  )
+const UsernameForm = () => {
+  return <>
+    <form action={submitAction}>
+      <Input type="text" name="name" placeholder="name" className="mb-2"/>
+      <Button type="submit">submit</Button>
+    </form>
+  </>
+}
+
+const Main = ({username}: {username: string}) => {
+  return <>
+    <div className="flex flex-row-reverse">
+      <DropdownMenuCheckboxes username={username}/>
+    </div>
+    <Workflow {...{username}}/>
+  </>
 }
 
 export default async function Home() {
-  console.log("Home")
-  const name = cookies().get("name")?.value
-  console.log(name)
-  // const username = await getName() || "Unknown"
+  const username = cookies().get("name")?.value
   return (
     <main className="flex flex-col justify-between p-12">
-      {name
-        ?(<div className="flex flex-row-reverse">
-          <DropdownMenuCheckboxes name={name}/>
-        </div>)
-        :(<div>
-          <form action={submitAction}>
-            <Input type="text" name="name" placeholder="name" className="mb-2"/>
-            <Button type="submit">submit</Button>
-          </form>
-        </div>)
+      {username != null && username !== ""
+        ?<Main username={username}/>
+        :<UsernameForm/>
       }
     </main>
   )
