@@ -38,7 +38,11 @@ test('should create data', async () => {
     {name: `node3`, status: "ToDo", memo: "memo3",
       assignee: {connect: users[2]}, workflow: {connect: workflow}, parents: {connect: [node, node2, ]}}
   })
-  const node3_created = await prisma.action.findFirst({where: {name: "node3"}, select: {parents: true}})
-
+  const node3_created = await prisma.action.findFirst({where: {name: "node3"}, select: {parents: true, children: true}})
   expect(node3_created?.parents).toEqual([node, node2])
+  expect(node3_created?.children).toEqual([])
+
+  const node2_created = await prisma.action.findFirst({where: {name: "node2"}, select: {parents: true, children: true}})
+  expect(node2_created?.parents).toEqual([node])
+  expect(node2_created?.children).toEqual([node3])
 })
