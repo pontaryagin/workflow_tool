@@ -10,3 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Status {
+    ToDo
+    InProgress
+    Done
+    Skipped
+}
+
+model User {
+    id  String @id
+    first_name String?
+    last_name String?
+    assignedActions Action[] @relation("ActionAssignee")
+}
+
+model Action{
+    id Int @id @default(autoincrement())
+    assignee User @relation("ActionAssignee", fields: [assigneeId], references: [id])
+    assigneeId String
+    name String
+    status Status
+    memo String
+    workflow Workflow @relation(fields: [workflowId], references: [id])
+    workflowId Int
+    parents Action[] @relation("ActionDependency")
+    children Action[]  @relation("ActionDependency")
+}
+
+model Workflow{
+    id Int @id @default(autoincrement())
+    name String
+    actions Action[]
+}
