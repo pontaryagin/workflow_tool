@@ -30,6 +30,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@quramy/jest-prisma": "^1.7.3",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -39,6 +41,7 @@
     "postcss": "^8",
     "prisma": "^5.9.1",
     "tailwindcss": "^3.3.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5"
   }
 }
