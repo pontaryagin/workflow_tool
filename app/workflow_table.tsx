@@ -50,12 +50,12 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
               Depends On
             </Label>
             <Select
+              id="parents"
               defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
               isMulti
               name="colors"
               options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
-              className="basic-multi-select col-span-3"
-              classNamePrefix="select"
+              className="col-span-3"
             />
           </div>
         </div>
@@ -70,10 +70,6 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
 export function WorkflowTable({ workflow }: { workflow: Workflow }) {
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
-  }
-  const editWorkflow = async (formData: FormData) => {
-    const id = formData.get("workflow_id")!
-    const workflow = await getWorkflow(Number(id))
   }
   return (
     <Table>
