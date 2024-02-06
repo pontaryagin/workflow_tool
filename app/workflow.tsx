@@ -26,9 +26,9 @@ export const Workflow = async ({ username }: WorkflowProps) => {
   return (
     <div>
       <h1 className="mb-5">Workflow Table</h1>
-      <WorkflowTable workflow={ workflow } />
+      <WorkflowTable { ...{ workflow } } />
       <h1 className="mt-10 mb-5">Workflow Chart</h1>
-      <WorkflowChart />
+      <WorkflowChart { ...{ workflow } } />
     </div>
   )
 }

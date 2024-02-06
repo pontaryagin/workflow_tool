@@ -15,6 +15,7 @@ import dagre from '@dagrejs/dagre'
 
 import 'reactflow/dist/style.css'
 import { Button } from '@/components/ui/button'
+import { Workflow } from '@/app/model'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -51,38 +52,26 @@ const getLayoutedElements = (nodes_: Node[], edges: Edge[], direction: Direction
   return { nodes, edges }
 }
 
-export const initialNodes: Node[] = [
-  {
-    id: '1',
-    type: 'input',
-    data: { label: 'input' },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: '2',
-    data: { label: 'node 2' },
-    position: { x: 0, y: 0 },
-  },
-  {
-    id: '3',
-    data: { label: 'node 3' },
-    position: { x: 0, y: 0 },
-  },
-]
-
 const markerEnd = { type: MarkerType.ArrowClosed }
-
-export const initialEdges: Edge[] = [
-  { id: 'e12', source: '1', target: '2', markerEnd: markerEnd },
-  { id: 'e3', source: '2', target: '3', markerEnd: markerEnd },
-]
-
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges
-)
-
-export const WorkflowChart = () => {
+export const WorkflowChart = ({ workflow }: { workflow: Workflow }) => {
+  const initialNodes = workflow.actions.map(action => ({
+    id: action.id.toString(),
+    data: { label: action.name },
+    position: { x: 0, y: 0 },
+  }))
+  const initialEdges = workflow.actions.map(action =>
+    action.parents.map(
+      parent_action => ({
+        id: `${action.id}-${parent_action.id}`,
+        source: parent_action.id.toString(),
+        target: action.id.toString(), markerEnd: markerEnd
+      })
+    )
+  ).flat()
+  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+    initialNodes,
+    initialEdges
+  )
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges)
 

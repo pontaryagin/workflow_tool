@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow, Action } from "@/app/model"
+import { getWorkflow, User, Workflow, Action, mutation } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Select from 'react-select'
+import { Prisma, PrismaClient } from "@prisma/client"
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
   return (
@@ -67,9 +68,24 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
   )
 }
 
+type ChangeEvent = React.ChangeEvent<HTMLInputElement>
+
 export function WorkflowTable({ workflow }: { workflow: Workflow }) {
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
+  }
+  const onChangeName = async (e: ChangeEvent, action: Action) => {
+    const action_ = await mutation.action.update({
+      where: {
+        id: action.id,
+      },
+      data: {
+        name: e.target.value,
+      }
+    })
+    console.log("onChangeName")
+    console.log(action_)
+    window.location.reload()
   }
   return (
     <Table>
@@ -86,7 +102,13 @@ export function WorkflowTable({ workflow }: { workflow: Workflow }) {
       <TableBody>
         { workflow.actions.map((action) => (
           <TableRow key={ action.id }>
-            <TableCell>{ action.name }</TableCell>
+            <TableCell>
+              {/* <Label htmlFor="name" className="text-right">
+                  Name
+                </Label> */}
+              <Input defaultValue={ action.name } onBlur={ (e) => onChangeName(e, action) } />
+              {/* { action.name } */ }
+            </TableCell>
             <TableCell>{ action.parents.map(action => action.name).join(",") }</TableCell>
             <TableCell>{ action.status }</TableCell>
             <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
