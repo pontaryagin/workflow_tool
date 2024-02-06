@@ -1,3 +1,4 @@
+'use client'
 import {
   Table,
   TableBody,
@@ -8,19 +9,68 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {use} from "react"
-import {getWorkflow, User} from "./model"
+import { use, useEffect, useState } from "react"
+import { getWorkflow, User, Workflow } from "@/app/model"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
-  
-export function WorkflowTable({workflow_id}: {workflow_id: number}) {
-  const workflow = use(getWorkflow(workflow_id))
+const ActionEditor = ({ action_id }: { action_id: number }) => {
+  const name = "Pedro Duarte"
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Edit</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Edit Action</DialogTitle>
+          <DialogDescription>
+            Make changes to the action { name }. Click save when you are done.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="username" className="text-right">
+              Username
+            </Label>
+            <Input id="username" value="@peduarte" className="col-span-3" />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+
+}
+
+export function WorkflowTable({ workflow, action }: { workflow: Workflow, action: (formData: number) => Promise<void> }) {
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
-
+  const editWorkflow = async (formData: FormData) => {
+    const id = formData.get("workflow_id")!
+    const workflow = await getWorkflow(Number(id))
+  }
   return (
     <Table>
-      {/* <TableCaption></TableCaption> */}
       <TableHeader>
         <TableRow>
           <TableCell>Action</TableCell>
@@ -28,20 +78,24 @@ export function WorkflowTable({workflow_id}: {workflow_id: number}) {
           <TableCell>Status</TableCell>
           <TableCell>Assignee</TableCell>
           <TableCell>Memo</TableCell>
+          <TableCell></TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {workflow.actions.map((action) => (
-          <TableRow key={action.name}>
-            <TableCell>{action.name}</TableCell>
-            <TableCell>{action.parents.map(action => action.name)}</TableCell>
-            <TableCell>{action.status}</TableCell>
-            <TableCell>{action.assignee ? formatUser(action.assignee): ""}</TableCell>
-            <TableCell>{action.memo}</TableCell>
+        { workflow.actions.map((action) => (
+          <TableRow key={ action.id }>
+            <TableCell>{ action.name }</TableCell>
+            <TableCell>{ action.parents.map(action => action.name).join(",") }</TableCell>
+            <TableCell>{ action.status }</TableCell>
+            <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
+            <TableCell>{ action.memo }</TableCell>
+            <TableCell>
+              {/* <ActionEditor action_id={ action.id } /> */ }
+              <Button onClick={ async () => { await action(9) } }>Edit</Button>
+            </TableCell>
           </TableRow>
-        ))}
+        )) }
       </TableBody>
     </Table>
   )
 }
-  

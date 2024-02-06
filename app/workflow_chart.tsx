@@ -1,4 +1,4 @@
-
+'use client'
 import React, { useCallback } from 'react'
 import ReactFlow, {
   addEdge,
@@ -23,7 +23,7 @@ const nodeWidth = 172
 const nodeHeight = 36
 type Direction = 'TB' | 'LR'
 
-const getLayoutedElements = (nodes_:Node[], edges:Edge[], direction: Direction = 'TB') => {
+const getLayoutedElements = (nodes_: Node[], edges: Edge[], direction: Direction = 'TB') => {
   const isHorizontal = direction === 'LR'
   dagreGraph.setGraph({ rankdir: direction })
 
@@ -46,7 +46,7 @@ const getLayoutedElements = (nodes_:Node[], edges:Edge[], direction: Direction =
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
     }
-    return {...node, targetPosition, sourcePosition} as Node
+    return { ...node, targetPosition, sourcePosition } as Node
   })
   return { nodes, edges }
 }
@@ -56,25 +56,25 @@ export const initialNodes: Node[] = [
     id: '1',
     type: 'input',
     data: { label: 'input' },
-    position: {x: 0, y: 0},
+    position: { x: 0, y: 0 },
   },
   {
     id: '2',
     data: { label: 'node 2' },
-    position: {x: 0, y: 0},
+    position: { x: 0, y: 0 },
   },
   {
     id: '3',
     data: { label: 'node 3' },
-    position: {x: 0, y: 0},
+    position: { x: 0, y: 0 },
   },
 ]
 
-const markerEnd = {type: MarkerType.ArrowClosed}
+const markerEnd = { type: MarkerType.ArrowClosed }
 
 export const initialEdges: Edge[] = [
-  { id: 'e12', source: '1', target: '2', markerEnd: markerEnd},
-  { id: 'e3', source: '2', target: '3', markerEnd: markerEnd},
+  { id: 'e12', source: '1', target: '2', markerEnd: markerEnd },
+  { id: 'e3', source: '2', target: '3', markerEnd: markerEnd },
 ]
 
 const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
@@ -86,15 +86,15 @@ export const WorkflowChart = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges)
 
-  const onConnect  = useCallback(
+  const onConnect = useCallback(
     (params: Connection) => {
       setEdges((eds) =>
-        addEdge({ ...params, type: ConnectionLineType.SmoothStep}, eds))
+        addEdge({ ...params, type: ConnectionLineType.SmoothStep }, eds))
     },
     []
   )
   const onLayout = useCallback(
-    (direction:Direction) => {
+    (direction: Direction) => {
       const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
         nodes,
         edges,
@@ -107,19 +107,20 @@ export const WorkflowChart = () => {
     [nodes, edges]
   )
 
-  return <div style={{ height: 700 }}>
+  return <div style={ { height: 700 } }>
     <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      connectionLineType={ConnectionLineType.SmoothStep}
+      nodes={ nodes }
+      edges={ edges }
+      // onNodesChange={onNodesChange}
+      // onEdgesChange={onEdgesChange}
+      // onConnect={onConnect}
+      connectionLineType={ ConnectionLineType.SmoothStep }
       fitView
+      proOptions={ { hideAttribution: true } }
     >
       <Panel position="top-right">
-        <Button variant="secondary" className='mx-1' onClick={() => onLayout('TB')}>vertical</Button>
-        <Button variant="secondary" className='mx-1' onClick={() => onLayout('LR')}>horizontal</Button>
+        <Button variant="secondary" className='mx-1' onClick={ () => onLayout('TB') }>vertical</Button>
+        <Button variant="secondary" className='mx-1' onClick={ () => onLayout('LR') }>horizontal</Button>
       </Panel>
     </ReactFlow>
 
