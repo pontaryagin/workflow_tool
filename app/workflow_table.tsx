@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow } from "@/app/model"
+import { getWorkflow, User, Workflow, Action } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -24,8 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const ActionEditor = ({ action_id }: { action_id: number }) => {
-  const name = "Pedro Duarte"
+const ActionEditor = ({ action }: { action: Action }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -35,7 +34,7 @@ const ActionEditor = ({ action_id }: { action_id: number }) => {
         <DialogHeader>
           <DialogTitle>Edit Action</DialogTitle>
           <DialogDescription>
-            Make changes to the action { name }. Click save when you are done.
+            Make changes to the action { action.name }. Click save when you are done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -58,10 +57,9 @@ const ActionEditor = ({ action_id }: { action_id: number }) => {
       </DialogContent>
     </Dialog>
   )
-
 }
 
-export function WorkflowTable({ workflow, action }: { workflow: Workflow, action: (formData: number) => Promise<void> }) {
+export function WorkflowTable({ workflow }: { workflow: Workflow }) {
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
@@ -90,8 +88,11 @@ export function WorkflowTable({ workflow, action }: { workflow: Workflow, action
             <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
             <TableCell>{ action.memo }</TableCell>
             <TableCell>
-              {/* <ActionEditor action_id={ action.id } /> */ }
-              <Button onClick={ async () => { await action(9) } }>Edit</Button>
+              <ActionEditor action={ action } />
+              {/* <Button onClick={ async () => {
+                const wf = await getWorkflow(9)
+                console.log(wf)
+              } }>Edit</Button> */}
             </TableCell>
           </TableRow>
         )) }

@@ -23,15 +23,10 @@ type Action = {
 
 export const Workflow = async ({ username }: WorkflowProps) => {
   const workflow = await getWorkflow(9)
-  const action = async (id: number) => {
-    "use server"
-    const workflow = await getWorkflow(id)
-    console.log(workflow)
-  }
   return (
     <div>
       <h1>Workflow Table</h1>
-      <WorkflowTable workflow={ workflow } action={ action } />
+      <WorkflowTable workflow={ workflow } />
       <h1>Workflow Chart</h1>
       <WorkflowChart />
     </div>
