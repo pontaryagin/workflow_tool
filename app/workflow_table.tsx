@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow, Action, mutation } from "@/app/model"
+import { getWorkflow, User, Workflow, Action, updateAction } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -75,7 +75,7 @@ export function WorkflowTable({ workflow }: { workflow: Workflow }) {
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
   const onChangeName = async (e: ChangeEvent, action: Action) => {
-    const action_ = await mutation.action.update({
+    const action_ = await updateAction({
       where: {
         id: action.id,
       },

@@ -23,8 +23,4 @@ export const getWorkflow = async (workflow_id: number) => {
   return workflow
 }
 
-export const mutation = {
-  action: {
-    update: prisma.action.update
-  }
-}
+export const updateAction = prisma.action.update
