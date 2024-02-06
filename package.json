@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.0.4",
+    "@glideapps/glide-data-grid": "^6.0.3",
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.9.1",
     "@projectstorm/react-diagrams": "^7.0.3",
@@ -25,6 +26,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.3",
+    "react-select": "^5.8.0",
     "reactflow": "^11.10.3",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

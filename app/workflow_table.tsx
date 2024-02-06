@@ -23,8 +23,9 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Select from 'react-select'
 
-const ActionEditor = ({ action }: { action: Action }) => {
+const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -42,13 +43,20 @@ const ActionEditor = ({ action }: { action: Action }) => {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input id="name" value={ action.name } className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="parents" className="text-right">
+              Depends On
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Select
+              defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
+              isMulti
+              name="colors"
+              options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
+              className="basic-multi-select col-span-3"
+              classNamePrefix="select"
+            />
           </div>
         </div>
         <DialogFooter>
@@ -88,7 +96,7 @@ export function WorkflowTable({ workflow }: { workflow: Workflow }) {
             <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
             <TableCell>{ action.memo }</TableCell>
             <TableCell>
-              <ActionEditor action={ action } />
+              <ActionEditor { ...{ workflow, action } } />
               {/* <Button onClick={ async () => {
                 const wf = await getWorkflow(9)
                 console.log(wf)
