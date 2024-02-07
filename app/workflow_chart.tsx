@@ -107,6 +107,8 @@ export const WorkflowChart = () => {
       connectionLineType={ ConnectionLineType.SmoothStep }
       fitView
       proOptions={ { hideAttribution: true } }
+      draggable={ false }
+      className='nowheel'
     >
       <Panel position="top-right">
         <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(false) }>vertical</Button>

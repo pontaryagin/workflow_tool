@@ -7,11 +7,6 @@ export type WorkflowContextType = {
   setWorkflow: (_: Workflow) => void
 }
 
-export const workflowContextDefaultValue = {
-  workflow: {} as Workflow,
-  setWorkflow: () => { throw new Error('setWorkflow was used before set') },
-}
-
 export const WorkflowContext = createContext<WorkflowContextType>(
-  workflowContextDefaultValue
+  null as unknown as WorkflowContextType // postpone initialization to WorkflowContext.Provider
 )
