@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import ReactFlow, {
   addEdge,
   ConnectionLineType,
@@ -24,8 +24,8 @@ const nodeWidth = 172
 const nodeHeight = 36
 type Direction = 'TB' | 'LR'
 
-const getLayoutedElements = (nodes_: Node[], edges: Edge[], direction: Direction = 'TB') => {
-  const isHorizontal = direction === 'LR'
+const getLayoutedElements = (nodes_: Node[], edges: Edge[], isHorizontal: boolean = false) => {
+  const direction = isHorizontal ? 'LR' : 'TB'
   dagreGraph.setGraph({ rankdir: direction })
 
   nodes_.forEach((node) => {
@@ -52,8 +52,11 @@ const getLayoutedElements = (nodes_: Node[], edges: Edge[], direction: Direction
   return { nodes, edges }
 }
 
+import { WorkflowContext, WorkflowContextType, workflowContextDefaultValue } from "./context"
 const markerEnd = { type: MarkerType.ArrowClosed }
-export const WorkflowChart = ({ workflow }: { workflow: Workflow }) => {
+export const WorkflowChart = () => {
+  const { isHorizontal, setIsHorizontal } = useContext(WorkflowContext).chart
+  const { workflow } = useContext(WorkflowContext)
   const initialNodes = workflow.actions.map(action => ({
     id: action.id.toString(),
     data: { label: action.name },
@@ -72,34 +75,32 @@ export const WorkflowChart = ({ workflow }: { workflow: Workflow }) => {
     initialNodes,
     initialEdges
   )
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges)
-
-  const onConnect = useCallback(
-    (params: Connection) => {
-      setEdges((eds) =>
-        addEdge({ ...params, type: ConnectionLineType.SmoothStep }, eds))
-    },
-    []
-  )
+  console.log("WorkflowChart")
+  console.log("initialNodes: ", initialNodes)
+  console.log("layoutedNodes: ", layoutedNodes)
+  // console.log("nodes: ", nodes)
+  // const onConnect = useCallback(
+  //   (params: Connection) => {
+  //     setEdges((eds) =>
+  //       addEdge({ ...params, type: ConnectionLineType.SmoothStep }, eds))
+  //   },
+  //   []
+  // )
   const onLayout = useCallback(
     (direction: Direction) => {
-      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-        nodes,
-        edges,
-        direction
+      const { nodes: layoutedNodes_, edges: layoutedEdges_ } = getLayoutedElements(
+        layoutedNodes,
+        layoutedEdges,
+        isHorizontal
       )
-
-      setNodes([...layoutedNodes])
-      setEdges([...layoutedEdges])
     },
-    [nodes, edges]
+    [layoutedNodes, layoutedEdges, isHorizontal]
   )
 
   return <div style={ { height: 700 } }>
     <ReactFlow
-      nodes={ nodes }
-      edges={ edges }
+      nodes={ layoutedNodes }
+      edges={ layoutedEdges }
       // onNodesChange={onNodesChange}
       // onEdgesChange={onEdgesChange}
       // onConnect={onConnect}
@@ -108,8 +109,8 @@ export const WorkflowChart = ({ workflow }: { workflow: Workflow }) => {
       proOptions={ { hideAttribution: true } }
     >
       <Panel position="top-right">
-        <Button variant="secondary" className='mx-1' onClick={ () => onLayout('TB') }>vertical</Button>
-        <Button variant="secondary" className='mx-1' onClick={ () => onLayout('LR') }>horizontal</Button>
+        <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(false) }>vertical</Button>
+        <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(true) }>horizontal</Button>
       </Panel>
     </ReactFlow>
 

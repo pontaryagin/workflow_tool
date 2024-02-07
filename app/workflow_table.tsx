@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { use, useEffect, useState } from "react"
+import { use, useContext, useEffect, useState } from "react"
 import { getWorkflow, User, Workflow, Action, updateAction } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Select from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
+
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
   return (
@@ -69,8 +70,9 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
 }
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>
-
-export function WorkflowTable({ workflow }: { workflow: Workflow }) {
+import { WorkflowContext } from "./context"
+export function WorkflowTable() {
+  const { workflow, setWorkflow } = useContext(WorkflowContext)
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
@@ -85,7 +87,7 @@ export function WorkflowTable({ workflow }: { workflow: Workflow }) {
     })
     console.log("onChangeName")
     console.log(action_)
-    window.location.reload()
+    setWorkflow(await getWorkflow(workflow.id))
   }
   return (
     <Table>
@@ -106,7 +108,9 @@ export function WorkflowTable({ workflow }: { workflow: Workflow }) {
               {/* <Label htmlFor="name" className="text-right">
                   Name
                 </Label> */}
-              <Input defaultValue={ action.name } onBlur={ (e) => onChangeName(e, action) } />
+              <Input defaultValue={ action.name }
+                onBlur={ (e) => onChangeName(e, action) }
+                className="outline-none border-transparent focus:border-transparent focus:ring-0" />
               {/* { action.name } */ }
             </TableCell>
             <TableCell>{ action.parents.map(action => action.name).join(",") }</TableCell>
