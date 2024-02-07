@@ -8,15 +8,18 @@ import { WorkflowContext, WorkflowContextType, workflowContextDefaultValue } fro
 
 export const WorkflowMain = ({ workflow }: { workflow: Workflow }) => {
   const [workflow_, setWorkflow] = useState<Workflow>(workflow)
-  const [isHorizontal, setIsHorizontal] = useState<boolean>(false)
+  const context = {
+    workflow: workflow_,
+    setWorkflow: setWorkflow,
+  }
   return (
     <div>
-      <WorkflowContext.Provider value={ { workflow: workflow_, setWorkflow: setWorkflow, chart: { isHorizontal, setIsHorizontal } } }>
+      <WorkflowContext.Provider value={ context } >
         <h1 className="mb-5">Workflow Table</h1>
         <WorkflowTable />
         <h1 className="mt-10 mb-5">Workflow Chart</h1>
         <WorkflowChart />
       </WorkflowContext.Provider>
-    </div>
+    </div >
   )
 }

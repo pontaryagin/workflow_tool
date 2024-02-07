@@ -76,13 +76,15 @@ export function WorkflowTable() {
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
-  const onChangeName = async (e: ChangeEvent, action: Action) => {
+  const onBlurName = async (e: ChangeEvent, action: Action) => {
+    const name = e.target.value
+    if (action.name === name) return
     const action_ = await updateAction({
       where: {
         id: action.id,
       },
       data: {
-        name: e.target.value,
+        name: name,
       }
     })
     console.log("onChangeName")
@@ -109,7 +111,7 @@ export function WorkflowTable() {
                   Name
                 </Label> */}
               <Input defaultValue={ action.name }
-                onBlur={ (e) => onChangeName(e, action) }
+                onBlur={ (e) => onBlurName(e, action) }
                 className="outline-none border-transparent focus:border-transparent focus:ring-0" />
               {/* { action.name } */ }
             </TableCell>

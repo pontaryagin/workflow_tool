@@ -5,22 +5,13 @@ import { Workflow } from "@/app/model"
 export type WorkflowContextType = {
   workflow: Workflow,
   setWorkflow: (_: Workflow) => void
-  chart: {
-    isHorizontal: boolean
-    setIsHorizontal: (_: boolean) => void
-  }
 }
 
 export const workflowContextDefaultValue = {
   workflow: {} as Workflow,
-  setWorkflow: () => { },
-  chart: {
-    isHorizontal: false,
-    setIsHorizontal: () => { },
-  }
+  setWorkflow: () => { throw new Error('setWorkflow was used before set') },
 }
 
 export const WorkflowContext = createContext<WorkflowContextType>(
   workflowContextDefaultValue
 )
-

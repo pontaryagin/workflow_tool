@@ -52,10 +52,10 @@ const getLayoutedElements = (nodes_: Node[], edges: Edge[], isHorizontal: boolea
   return { nodes, edges }
 }
 
-import { WorkflowContext, WorkflowContextType, workflowContextDefaultValue } from "./context"
+import { WorkflowContext } from "./context"
 const markerEnd = { type: MarkerType.ArrowClosed }
 export const WorkflowChart = () => {
-  const { isHorizontal, setIsHorizontal } = useContext(WorkflowContext).chart
+  const [isHorizontal, setIsHorizontal] = React.useState<boolean>(false)
   const { workflow } = useContext(WorkflowContext)
   const initialNodes = workflow.actions.map(action => ({
     id: action.id.toString(),
