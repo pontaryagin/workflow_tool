@@ -74,6 +74,7 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>
 import { WorkflowContext } from "./context"
+import { Badge } from "@/components/ui/badge"
 export function WorkflowTable() {
   const [isEditable, setIsEditable] = React.useState(false)
   const { workflow, setWorkflow } = useContext(WorkflowContext)
@@ -139,10 +140,10 @@ export function WorkflowTable() {
                   options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
                   onChange={ (e) => onChangeParents(e, action) }
                 />
-                : action.parents.map(action => action.name).join(" ")
+                : <>{ action.parents.map(action => (<Badge key={ action.id } variant="outline">{ action.name }</Badge>)) }</>
               }
             </TableCell>
-            <TableCell>{ action.status }</TableCell>
+            <TableCell><Badge variant="secondary">{ action.status }</Badge></TableCell>
             <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
             <TableCell>{ action.memo }</TableCell>
           </TableRow>
