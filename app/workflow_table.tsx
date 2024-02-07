@@ -112,7 +112,7 @@ export function WorkflowTable() {
                 </Label> */}
               <Input defaultValue={ action.name }
                 onBlur={ (e) => onBlurName(e, action) }
-                className="outline-none border-transparent focus:border-transparent focus:ring-0" />
+                className="border-transparent bg-transparent focus:bg-white" />
               {/* { action.name } */ }
             </TableCell>
             <TableCell>{ action.parents.map(action => action.name).join(",") }</TableCell>
