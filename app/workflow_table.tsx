@@ -95,6 +95,18 @@ export function WorkflowTable() {
     console.log(action_)
     setWorkflow(await getWorkflow(workflow.id))
   }
+  const onChangeParents = async (values: readonly { value: number, label: string }[], action: Action) => {
+    const _ = await updateAction({
+      where: {
+        id: action.id
+      },
+      data: {
+        parents: {
+          connect: values.map((v) => ({ id: v.value }))
+        }
+      }
+    })
+  }
   return (<>
     <div className="flex flex-row-reverse">
       <Button onClick={ () => { setIsEditable(!isEditable) } } variant={ isEditable ? "outline" : "default" }>Edit</Button>
@@ -125,7 +137,7 @@ export function WorkflowTable() {
                   defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
                   isMulti
                   options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
-                  onBlur={ onBlurParents }
+                  onChange={ (e) => onChangeParents(e, action) }
                 />
                 : action.parents.map(action => action.name).join(" ")
               }
