@@ -23,8 +23,9 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Select from 'react-select'
+import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
+import React from 'react'
 
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
@@ -69,9 +70,12 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
   )
 }
 
+
+
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>
 import { WorkflowContext } from "./context"
 export function WorkflowTable() {
+  const [isEditable, setIsEditable] = React.useState(false)
   const { workflow, setWorkflow } = useContext(WorkflowContext)
   const formatUser = (user: User) => {
     return `${user.first_name} ${user.last_name}(${user.id})`
@@ -91,6 +95,25 @@ export function WorkflowTable() {
     console.log(action_)
     setWorkflow(await getWorkflow(workflow.id))
   }
+  type ColourOption = { label: number, value: string }
+  // const styles: StylesConfig<ColourOption, true> = {
+  //   multiValue: (base, state) => {
+  //     return state.data.isFixed ? { ...base, backgroundColor: 'gray' } : base
+  //   },
+  //   multiValueLabel: (base, state) => {
+  //     return state.data.isFixed
+  //       ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 }
+  //       : base
+  //   },
+  //   multiValueRemove: (base, state) => {
+  //     return state.data.isFixed ? { ...base, display: 'none' } : base
+  //   },
+  // }
+  const stylesTransparent = (isActive: boolean) => ({
+    color: isActive ? undefined : 'transparent',
+    borderColor: isActive ? undefined : 'transparent',
+    backgroundColor: isActive ? undefined : 'transparent',
+  })
   return (
     <Table>
       <TableHeader>
@@ -100,32 +123,49 @@ export function WorkflowTable() {
           <TableCell>Status</TableCell>
           <TableCell>Assignee</TableCell>
           <TableCell>Memo</TableCell>
-          <TableCell></TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
         { workflow.actions.map((action) => (
           <TableRow key={ action.id }>
             <TableCell>
-              {/* <Label htmlFor="name" className="text-right">
-                  Name
-                </Label> */}
               <Input defaultValue={ action.name }
                 onBlur={ (e) => onBlurName(e, action) }
                 className="border-transparent bg-transparent focus:bg-white" />
               {/* { action.name } */ }
             </TableCell>
-            <TableCell>{ action.parents.map(action => action.name).join(",") }</TableCell>
+            <TableCell>
+              <Select
+                defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
+                isMulti
+                options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
+                styles={ {
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ...stylesTransparent(state.isFocused),
+                  }),
+                  dropdownIndicator: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ...stylesTransparent(state.isFocused),
+                  }),
+                  indicatorSeparator: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ...stylesTransparent(state.isFocused),
+                  }),
+                  clearIndicator: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ...stylesTransparent(state.isFocused),
+                  }),
+                  multiValueRemove: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ...stylesTransparent(state.isFocused),
+                  })
+                } }
+              />
+            </TableCell>
             <TableCell>{ action.status }</TableCell>
             <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
             <TableCell>{ action.memo }</TableCell>
-            <TableCell>
-              <ActionEditor { ...{ workflow, action } } />
-              {/* <Button onClick={ async () => {
-                const wf = await getWorkflow(9)
-                console.log(wf)
-              } }>Edit</Button> */}
-            </TableCell>
           </TableRow>
         )) }
       </TableBody>
