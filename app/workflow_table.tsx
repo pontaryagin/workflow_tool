@@ -194,13 +194,13 @@ export function WorkflowTable() {
               }
             </TableCell>
             <TableCell>
-              <pre>
+              <div className="whitespace-pre-wrap md:w-[20rem] w-[10rem]">
                 { isEditable
                   ? <Textarea defaultValue={ action.memo }
                     onBlur={ (e) => onBlurMemo(e, action) } />
                   : action.memo
                 }
-              </pre>
+              </div>
             </TableCell>
           </TableRow>
         )) }
