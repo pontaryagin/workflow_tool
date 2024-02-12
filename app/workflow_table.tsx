@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useContext, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow, Action, updateAction } from "@/app/model"
+import { getWorkflow, User, Workflow, Action, updateAction, findManyUser } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -75,25 +75,43 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>
 import { WorkflowContext } from "./context"
 import { Badge } from "@/components/ui/badge"
+import { format } from "path"
+import { start } from "repl"
+import AsyncSelect from 'react-select/async'
+import { Textarea } from "@/components/ui/textarea"
 export function WorkflowTable() {
   const [isEditable, setIsEditable] = React.useState(false)
   const { workflow, setWorkflow } = useContext(WorkflowContext)
-  const formatUser = (user: User) => {
+  const formatUser = (user?: User) => {
+    if (!user) return ""
     return `${user.first_name} ${user.last_name}(${user.id})`
   }
   const onBlurName = async (e: ChangeEvent, action: Action) => {
     const name = e.target.value
     if (action.name === name) return
-    const action_ = await updateAction({
+    const _ = await updateAction({
       where: {
         id: action.id,
       },
       data: {
-        name: name,
+        name,
       }
     })
-    console.log("onChangeName")
-    console.log(action_)
+    console.log(`Update name : ${action.name} => ${name}`)
+    setWorkflow(await getWorkflow(workflow.id))
+  }
+  const onBlurMemo = async (e: React.FocusEvent<HTMLTextAreaElement>, action: Action) => {
+    const memo = e.target.value
+    if (action.memo === memo) return
+    const _ = await updateAction({
+      where: {
+        id: action.id,
+      },
+      data: {
+        memo,
+      }
+    })
+    console.log(`Update memo : ${action.memo} => ${memo}`)
     setWorkflow(await getWorkflow(workflow.id))
   }
   const onChangeParents = async (values: readonly { value: number, label: string }[], action: Action) => {
@@ -107,6 +125,23 @@ export function WorkflowTable() {
         }
       }
     })
+  }
+  const loadUserList = async (inputValue: string) => {
+    const users = await findManyUser({
+      where: {
+        OR: [
+          { id: { startsWith: inputValue } },
+          { first_name: { startsWith: inputValue } },
+          { last_name: { startsWith: inputValue } },
+        ]
+      }
+    })
+    return users.map(
+      user => ({
+        value: user.id,
+        label: formatUser(user),
+      })
+    )
   }
   return (<>
     <div className="flex flex-row-reverse">
@@ -144,8 +179,25 @@ export function WorkflowTable() {
               }
             </TableCell>
             <TableCell><Badge variant="secondary">{ action.status }</Badge></TableCell>
-            <TableCell>{ action.assignee ? formatUser(action.assignee) : "" }</TableCell>
-            <TableCell>{ action.memo }</TableCell>
+            <TableCell>{ formatUser(action.assignee) }</TableCell>
+            <TableCell>
+              { isEditable
+                ? <AsyncSelect
+                  defaultValue={ { value: action.assignee.id, label: formatUser(action.assignee) } }
+                  defaultOptions
+                  loadOptions={ loadUserList }
+                // onChange={ (e) => onChangeParents(e, action) }
+                />
+                : formatUser(action.assignee)
+              }
+            </TableCell>
+            <TableCell>
+              { isEditable
+                ? <Textarea defaultValue={ action.memo }
+                  onBlur={ (e) => onBlurMemo(e, action) } />
+                : action.memo
+              }
+            </TableCell>
           </TableRow>
         )) }
       </TableBody>

@@ -17,6 +17,9 @@ export const getWorkflow = async (workflow_id: number) => {
         include: {
           parents: true,
           assignee: true,
+        },
+        orderBy: {
+          id: "asc"  // TODO: this should be "order" variable
         }
       },
     }
@@ -25,4 +28,5 @@ export const getWorkflow = async (workflow_id: number) => {
 }
 
 export const updateAction = prisma.action.update
+export const findManyUser = prisma.user.findMany
 
