@@ -121,10 +121,12 @@ export function WorkflowTable() {
       },
       data: {
         parents: {
+          set: [],
           connect: values.map((v) => ({ id: v.value }))
         }
       }
     })
+    setWorkflow(await getWorkflow(workflow.id))
   }
   const loadUserList = async (inputValue: string) => {
     const users = await findManyUser({
@@ -192,11 +194,13 @@ export function WorkflowTable() {
               }
             </TableCell>
             <TableCell>
-              { isEditable
-                ? <Textarea defaultValue={ action.memo }
-                  onBlur={ (e) => onBlurMemo(e, action) } />
-                : action.memo
-              }
+              <pre>
+                { isEditable
+                  ? <Textarea defaultValue={ action.memo }
+                    onBlur={ (e) => onBlurMemo(e, action) } />
+                  : action.memo
+                }
+              </pre>
             </TableCell>
           </TableRow>
         )) }

@@ -1,6 +1,8 @@
 'use server'
 import { Prisma, PrismaClient } from "@prisma/client"
 import { createContext, useContext } from "react"
+import { getGraph, getActionGraph } from "./graph"
+import { sortBy } from 'lodash'
 
 export type User = Prisma.UserGetPayload<{}>
 export type Workflow = Prisma.WorkflowGetPayload<{ include: { actions: { include: { assignee: true, parents: true } } } }>
@@ -24,6 +26,13 @@ export const getWorkflow = async (workflow_id: number) => {
       },
     }
   })
+  const { nodes, edges } = getActionGraph(workflow)
+  const graph = getGraph(nodes, edges, false)
+  sortBy(workflow.actions, (action: Action) => {
+    const n = graph.node(action.id.toString())
+    return [n.y, action.id]
+  })
+
   return workflow
 }
 
