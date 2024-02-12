@@ -35,6 +35,47 @@ export const getWorkflow = async (workflow_id: number) => {
   return workflow
 }
 
+export const updateActionToDone = async (action_id: number) => {
+  const action = await prisma.action.findUniqueOrThrow({
+    where: {
+      id: action_id,
+    },
+    include: {
+      children: true,
+    }
+  })
+  prisma.$transaction([
+    prisma.action.updateMany({
+      where: {
+        id: {
+          in: action.children.map((a) => a.id)
+        }
+      },
+      data: {
+        status: "InProgress",
+      }
+    }),
+    prisma.action.update({
+      where: {
+        id: action.id,
+      },
+      data: {
+        status: "Done",
+      }
+    })
+  ])
+  return action
+}
+
 export const updateAction = prisma.action.update
 export const findManyUser = prisma.user.findMany
+export const findUniqueOrThrowUser = prisma.user.findUniqueOrThrow
+export const findUniqueUser = prisma.user.findUnique
 
+export const getUser = async (id: string) => {
+  return await findUniqueUser({
+    where: {
+      id,
+    }
+  })
+}

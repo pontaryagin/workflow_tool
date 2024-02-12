@@ -1,16 +1,17 @@
 'use client'
 import { WorkflowChart } from "./workflow_chart"
 import { WorkflowTable } from "./workflow_table"
-import { Workflow } from "@/app/model"
+import { User, Workflow } from "@/app/model"
 import { WorkflowContext } from "./context"
 import React from "react"
 
 
-export const WorkflowMain = ({ workflow }: { workflow: Workflow }) => {
+export const WorkflowMain = ({ workflow, currentUser }: { workflow: Workflow, currentUser: User }) => {
   const [workflow_, setWorkflow] = React.useState<Workflow>(workflow)
   const context = {
     workflow: workflow_,
     setWorkflow: setWorkflow,
+    currentUser,
   }
   return (
     <div>

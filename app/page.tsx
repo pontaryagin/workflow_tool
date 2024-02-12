@@ -1,4 +1,3 @@
-// 'use client'
 import * as React from "react"
 import { cookies } from "next/headers"
 // import { getName } from "./auth";
@@ -15,7 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 import { WorkflowMain } from "./workflow"
-import { getWorkflow } from "@/app/model"
+import { User, findUniqueOrThrowUser, findUniqueUser, getUser, getWorkflow } from "@/app/model"
+import { prisma } from "@/app/db"
 
 async function submitAction(formData: FormData) {
   "use server"
@@ -30,11 +30,11 @@ async function logout(formData: FormData) {
   cookies().delete("name")
 }
 
-export function DropdownMenuCheckboxes({ username }: { username: string }) {
+export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
   return <>
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Badge>{ username }</Badge>
+        <Badge>{ currentUser.id }</Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
@@ -56,24 +56,25 @@ const UsernameForm = () => {
   </>
 }
 
-const Main = async ({ username }: { username: string }) => {
-  const workflow = await getWorkflow(9)
-  return <>
-    <div className="flex flex-row-reverse">
-      <DropdownMenuCheckboxes username={ username } />
-    </div>
-    <WorkflowMain { ...{ username, workflow } } />
-  </>
-}
-
 export default async function Home() {
-  const username = cookies().get("name")?.value
+  const workflow = await getWorkflow(9)
+  const userId = cookies().get("name")?.value
+  if (userId == null || userId === "") {
+    return <UsernameForm />
+  }
+  console.log(`userId: ${userId}`)
+  // const currentUser = await getUser(userId)
+  const currentUser = await findUniqueUser({ where: { id: userId } })
+  if (currentUser == null) {
+    return <UsernameForm />
+  }
   return (
     <main className="flex flex-col justify-between p-12">
-      { username != null && username !== ""
-        ? <Main username={ username } />
-        : <UsernameForm />
-      }
+      <div className="flex flex-row-reverse">
+        <DropdownMenuCheckboxes { ...{ currentUser } } />
+      </div>
+      <WorkflowMain { ...{ workflow, currentUser } } />
     </main>
   )
 }
+

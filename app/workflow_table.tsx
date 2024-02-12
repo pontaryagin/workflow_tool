@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useContext, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow, Action, updateAction, findManyUser } from "@/app/model"
+import { getWorkflow, User, Workflow, Action, updateAction, findManyUser, updateActionToDone } from "@/app/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -79,9 +79,10 @@ import { format } from "path"
 import { start } from "repl"
 import AsyncSelect from 'react-select/async'
 import { Textarea } from "@/components/ui/textarea"
-export function WorkflowTable() {
+
+export const WorkflowTable = () => {
   const [isEditable, setIsEditable] = React.useState(false)
-  const { workflow, setWorkflow } = useContext(WorkflowContext)
+  const { workflow, setWorkflow, currentUser } = useContext(WorkflowContext)
   const formatUser = (user?: User) => {
     if (!user) return ""
     return `${user.first_name} ${user.last_name}(${user.id})`
@@ -145,6 +146,11 @@ export function WorkflowTable() {
       })
     )
   }
+  const onClickDone = async (action: Action) => {
+    console.log("Market as done an action : ", action.name)
+    updateActionToDone(action.id)
+    setWorkflow(await getWorkflow(workflow.id))
+  }
   return (<>
     <div className="flex flex-row-reverse">
       <Button onClick={ () => { setIsEditable(!isEditable) } } variant={ isEditable ? "outline" : "default" }>Edit</Button>
@@ -157,6 +163,7 @@ export function WorkflowTable() {
           <TableCell>Status</TableCell>
           <TableCell>Assignee</TableCell>
           <TableCell>Memo</TableCell>
+          <TableCell></TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -192,18 +199,22 @@ export function WorkflowTable() {
                 : formatUser(action.assignee)
               }
             </TableCell>
+            <TableCell className="whitespace-pre-wrap min-w-[9rem]">
+              { isEditable
+                ? <Textarea defaultValue={ action.memo }
+                  onBlur={ (e) => onBlurMemo(e, action) } />
+                : action.memo
+              }
+            </TableCell>
             <TableCell>
-              <div className="whitespace-pre-wrap min-w-[9rem]">
-                { isEditable
-                  ? <Textarea defaultValue={ action.memo }
-                    onBlur={ (e) => onBlurMemo(e, action) } />
-                  : action.memo
-                }
-              </div>
+              { action.assignee.id === currentUser.id
+                ? < Button variant="default" onClick={ () => onClickDone(action) } className="size-7">🗸</Button>
+                : null
+              }
             </TableCell>
           </TableRow>
         )) }
       </TableBody>
-    </Table>
+    </Table >
   </>)
 }
