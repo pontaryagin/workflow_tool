@@ -162,14 +162,14 @@ export function WorkflowTable() {
       <TableBody>
         { workflow.actions.map((action) => (
           <TableRow key={ action.id }>
-            <TableCell>
+            <TableCell className="min-w-[8rem]">
               { isEditable
                 ? <Input defaultValue={ action.name }
                   onBlur={ (e) => onBlurName(e, action) } />
                 : action.name
               }
             </TableCell>
-            <TableCell>
+            <TableCell className="min-w-[12rem]">
               { isEditable
                 ? <Select
                   defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
@@ -181,8 +181,7 @@ export function WorkflowTable() {
               }
             </TableCell>
             <TableCell><Badge variant="secondary">{ action.status }</Badge></TableCell>
-            <TableCell>{ formatUser(action.assignee) }</TableCell>
-            <TableCell>
+            <TableCell className="min-w-[12rem]">
               { isEditable
                 ? <AsyncSelect
                   defaultValue={ { value: action.assignee.id, label: formatUser(action.assignee) } }
@@ -194,7 +193,7 @@ export function WorkflowTable() {
               }
             </TableCell>
             <TableCell>
-              <div className="whitespace-pre-wrap w-32">
+              <div className="whitespace-pre-wrap min-w-[9rem]">
                 { isEditable
                   ? <Textarea defaultValue={ action.memo }
                     onBlur={ (e) => onBlurMemo(e, action) } />
