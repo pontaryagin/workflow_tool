@@ -28,11 +28,10 @@ export const getWorkflow = async (workflow_id: number) => {
   })
   const { nodes, edges } = getActionGraph(workflow)
   const graph = getGraph(nodes, edges, false)
-  sortBy(workflow.actions, (action: Action) => {
+  workflow.actions = sortBy(workflow.actions, [(action: Action) => {
     const n = graph.node(action.id.toString())
-    return [n.y, action.id]
-  })
-
+    return n.y
+  }, "id"])
   return workflow
 }
 
