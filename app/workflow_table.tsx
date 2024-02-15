@@ -207,7 +207,7 @@ export const WorkflowTable = () => {
               }
             </TableCell>
             <TableCell>
-              { action.assignee.id === currentUser.id
+              { action.assignee.id === currentUser.id && action.status === "InProgress"
                 ? < Button variant="default" onClick={ () => onClickDone(action) } className="size-7">🗸</Button>
                 : null
               }

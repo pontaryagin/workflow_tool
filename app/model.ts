@@ -44,6 +44,9 @@ export const updateActionToDone = async (action_id: number) => {
       children: true,
     }
   })
+  if (action.status !== "InProgress") {
+    throw new Error("Action is not in progress")
+  }
   prisma.$transaction([
     prisma.action.updateMany({
       where: {
