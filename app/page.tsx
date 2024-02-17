@@ -60,7 +60,9 @@ export default async function Home() {
   const workflow = await getWorkflow(1)
   const userId = cookies().get("name")?.value
   if (userId == null || userId === "") {
-    return <UsernameForm />
+    return <main className="p-12">
+      <UsernameForm />
+    </main>
   }
   console.log(`userId: ${userId}`)
   // const currentUser = await getUser(userId)
