@@ -151,6 +151,9 @@ export const WorkflowTable = () => {
     updateActionToDone(action.id)
     setWorkflow(await getWorkflow(workflow.id))
   }
+  const isActionEditable = (action: Action) => {
+    return ["ToDo", "InProgress"].includes(action.status)
+  }
   return (<>
     <div className="flex flex-row-reverse">
       <Button onClick={ () => { setIsEditable(!isEditable) } } variant={ isEditable ? "outline" : "default" }>Edit</Button>
@@ -170,14 +173,14 @@ export const WorkflowTable = () => {
         { workflow.actions.map((action) => (
           <TableRow key={ action.id }>
             <TableCell className="min-w-[8rem]">
-              { isEditable
+              { isEditable && isActionEditable(action)
                 ? <Input defaultValue={ action.name }
                   onBlur={ (e) => onBlurName(e, action) } />
                 : action.name
               }
             </TableCell>
             <TableCell className="min-w-[12rem]">
-              { isEditable
+              { isEditable && isActionEditable(action)
                 ? <Select
                   defaultValue={ action.parents.map(parent => ({ value: parent.id, label: parent.name })) }
                   isMulti
@@ -189,7 +192,7 @@ export const WorkflowTable = () => {
             </TableCell>
             <TableCell><Badge variant="secondary">{ action.status }</Badge></TableCell>
             <TableCell className="min-w-[12rem]">
-              { isEditable
+              { isEditable && isActionEditable(action)
                 ? <AsyncSelect
                   defaultValue={ { value: action.assignee.id, label: formatUser(action.assignee) } }
                   defaultOptions

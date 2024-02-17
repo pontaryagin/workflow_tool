@@ -36,7 +36,7 @@ export const getWorkflow = async (workflow_id: number) => {
 }
 
 export const updateActionToDone = async (action_id: number) => {
-  const action = await prisma.action.findUniqueOrThrow({
+  let action = await prisma.action.findUniqueOrThrow({
     where: {
       id: action_id,
     },
@@ -47,27 +47,29 @@ export const updateActionToDone = async (action_id: number) => {
   if (action.status !== "InProgress") {
     throw new Error("Action is not in progress")
   }
-  prisma.$transaction([
+  await prisma.$transaction([
+    prisma.action.update({
+      where: {
+        id: action_id,
+      },
+      data: {
+        status: "Done",
+      }
+    }),
     prisma.action.updateMany({
       where: {
-        id: {
-          in: action.children.map((a) => a.id)
-        }
+        parents: {
+          every: {
+            status: "Done"
+          }
+        },
+        status: "ToDo",
       },
       data: {
         status: "InProgress",
       }
     }),
-    prisma.action.update({
-      where: {
-        id: action.id,
-      },
-      data: {
-        status: "Done",
-      }
-    })
   ])
-  return action
 }
 
 export const updateAction = prisma.action.update
