@@ -1,9 +1,8 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { range } from '../utils/basic'
-
+import { prisma } from '@/lib/prisma'
 
 (async () => {
-  const prisma = new PrismaClient()
   const users_ = range(0, 3).map(i => ({
     id: `user${i}`,
     first_name: `first${i}`,

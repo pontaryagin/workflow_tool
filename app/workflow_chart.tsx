@@ -47,18 +47,12 @@ import { get } from 'http'
 export const WorkflowChart = () => {
   const [isHorizontal, setIsHorizontal] = React.useState<boolean>(false)
   const { workflow } = useContext(WorkflowContext)
-  console.log(workflow)
   const { nodes: initialNodes, edges: initialEdges } = getActionGraph(workflow)
-  console.log(initialNodes)
   const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialNodes,
     initialEdges,
     isHorizontal
   )
-  console.log("WorkflowChart")
-  console.log("initialNodes: ", initialNodes)
-  console.log("layoutedNodes: ", layoutedNodes)
-
   return <div style={ { height: 700 } }>
     <ReactFlow
       nodes={ layoutedNodes }

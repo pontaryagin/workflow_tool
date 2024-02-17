@@ -3,12 +3,12 @@ import { Prisma, PrismaClient } from "@prisma/client"
 import { createContext, useContext } from "react"
 import { getGraph, getActionGraph } from "./graph"
 import { sortBy } from 'lodash'
+import { prisma } from "@/lib/prisma"
 
 export type User = Prisma.UserGetPayload<{}>
 export type Workflow = Prisma.WorkflowGetPayload<{ include: { actions: { include: { assignee: true, parents: true } } } }>
 export type Action = Prisma.ActionGetPayload<{ include: { assignee: true, parents: true } }>
 
-const prisma = new PrismaClient()
 export const getWorkflow = async (workflow_id: number) => {
   const workflow = await prisma.workflow.findUniqueOrThrow({
     where: {
