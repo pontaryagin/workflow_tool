@@ -15,7 +15,7 @@ async function submitAction(formData: FormData) {
   }
   const nextUrl = formData.get("next")
   console.log("nextUrl", nextUrl)
-  if (typeof (nextUrl) === "string") {
+  if (typeof nextUrl == "string") {
     redirect(nextUrl)
   }
 }
