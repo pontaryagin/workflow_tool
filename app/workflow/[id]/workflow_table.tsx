@@ -73,7 +73,7 @@ const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow
 
 
 type ChangeEvent = React.ChangeEvent<HTMLInputElement>
-import { WorkflowContext } from "./context"
+import { WorkflowContext } from "../../context"
 import { Badge } from "@/components/ui/badge"
 import { format } from "path"
 import { start } from "repl"

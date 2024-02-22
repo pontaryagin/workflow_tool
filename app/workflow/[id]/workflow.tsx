@@ -2,7 +2,7 @@
 import { WorkflowChart } from "./workflow_chart"
 import { WorkflowTable } from "./workflow_table"
 import { User, Workflow } from "@/app/model"
-import { WorkflowContext } from "./context"
+import { WorkflowContext } from "../../context"
 import React from "react"
 
 

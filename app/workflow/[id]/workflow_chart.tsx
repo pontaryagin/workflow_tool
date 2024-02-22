@@ -15,10 +15,10 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import { Button } from '@/components/ui/button'
 import { Workflow } from '@/app/model'
-import { getActionGraph } from './graph'
+import { getActionGraph } from '../../graph'
 
 type Direction = 'TB' | 'LR'
-import { getGraph } from "./graph"
+import { getGraph } from "../../graph"
 
 const nodeWidth = 172
 const nodeHeight = 36
@@ -42,7 +42,7 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], isHorizontal: boolean
   return { nodes: nodes_, edges }
 }
 
-import { WorkflowContext } from "./context"
+import { WorkflowContext } from "../../context"
 import { get } from 'http'
 export const WorkflowChart = () => {
   const [isHorizontal, setIsHorizontal] = React.useState<boolean>(false)

@@ -21,9 +21,7 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={ inter.className }>
         <NavigationMenuDemo { ...{ currentUser } }></NavigationMenuDemo>
-        <main>
-          { children }
-        </main>
+        { children }
       </body>
     </html>
   )
