@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma"
 
 export type User = Prisma.UserGetPayload<{}>
 export type Workflow = Prisma.WorkflowGetPayload<{ include: { actions: { include: { assignee: true, parents: true } } } }>
+export type WorkflowMin = Prisma.WorkflowGetPayload<{}>
 export type Action = Prisma.ActionGetPayload<{ include: { assignee: true, parents: true } }>
 
 export const getWorkflow = async (workflow_id: number) => {
@@ -76,6 +77,7 @@ export const updateAction = prisma.action.update
 export const findManyUser = prisma.user.findMany
 export const findUniqueOrThrowUser = prisma.user.findUniqueOrThrow
 export const findUniqueUser = prisma.user.findUnique
+export const findManyWorkflow = prisma.workflow.findMany
 
 export const getUser = async (id: string) => {
   return await findUniqueUser({
