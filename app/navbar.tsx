@@ -59,14 +59,14 @@ export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error 
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
               <NavigationMenuLink className={ navigationMenuTriggerStyle() }>
-                Documentation
+                Home
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/workflow/1" legacyBehavior passHref>
+            <Link href="/workflows" legacyBehavior passHref>
               <NavigationMenuLink className={ navigationMenuTriggerStyle() }>
-                Documentation
+                Workflows
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
