@@ -43,7 +43,7 @@ export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
   </>
 }
 
-export const NavigationMenuDemo = async ({ currentUser }: { currentUser: User | Error | null }) => {
+export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error | null }) => {
   if (currentUser == null) {
     redirect(`/login?next=${encodeURIComponent("/")}`)
   }
@@ -53,7 +53,7 @@ export const NavigationMenuDemo = async ({ currentUser }: { currentUser: User | 
     </main>
   }
   return (
-    <header className="sticky top-0 z-50 bg-background/95 flex justify-between">
+    <header className="sticky top-0 z-50 bg-background/95 flex justify-between border-b border-border/50">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -64,7 +64,7 @@ export const NavigationMenuDemo = async ({ currentUser }: { currentUser: User | 
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/docs" legacyBehavior passHref>
+            <Link href="/" legacyBehavior passHref>
               <NavigationMenuLink className={ navigationMenuTriggerStyle() }>
                 Documentation
               </NavigationMenuLink>
