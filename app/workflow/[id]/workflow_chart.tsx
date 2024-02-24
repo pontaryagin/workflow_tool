@@ -15,10 +15,9 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import { Button } from '@/components/ui/button'
 import { Workflow } from '@/lib/model'
-import { getActionGraph } from '../../graph'
+import { getActionGraph, getGraph } from '@/lib/graph'
 
 type Direction = 'TB' | 'LR'
-import { getGraph } from "../../graph"
 
 const nodeWidth = 172
 const nodeHeight = 36
