@@ -7,8 +7,8 @@ import { getCurrentUser } from "./auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Workflow Editor",
-  description: "Workflow edit tool",
+  title: "Workflow Builder",
+  description: "Workflow build tool",
 }
 
 export default async function RootLayout({
