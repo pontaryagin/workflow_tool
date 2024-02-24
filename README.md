@@ -27,8 +27,19 @@ https://ui.shadcn.com/
 npx shadcn-ui@latest add <Component Name>
 ```
 
-## DB
+## Create sample for DB
+```
+./dev-script/init.sh
+```
+
+
+## Migrate DB
 ```
 npx prisma migrate dev --name <name of operation>
 ```
 
+## Reset DB
+Reset all data and migrate
+```
+npx prisma migrate reset
+```
