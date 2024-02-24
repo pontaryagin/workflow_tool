@@ -26,3 +26,9 @@ https://ui.shadcn.com/
 ```bash
 npx shadcn-ui@latest add <Component Name>
 ```
+
+## DB
+```
+npx prisma migrate dev --name <name of operation>
+```
+
