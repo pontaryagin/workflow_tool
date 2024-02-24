@@ -4,7 +4,7 @@ import {
   Edge,
   MarkerType,
 } from 'reactflow'
-import { Workflow } from './model'
+import { Workflow } from '@/lib/model'
 
 export const getGraph = (nodes_: Node[], edges: Edge[], isHorizontal: boolean, nodeWidth = 1, nodeHeight = 1) => {
   const direction = isHorizontal ? 'LR' : 'TB'

@@ -1,6 +1,6 @@
 'use client'
 import { createContext } from "react"
-import { Workflow, User } from "@/app/model"
+import { Workflow, User } from "@/lib/model"
 
 export type WorkflowContextType = {
   workflow: Workflow,

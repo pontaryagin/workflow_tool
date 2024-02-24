@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { use, useContext, useEffect, useState } from "react"
-import { getWorkflow, User, Workflow, Action, updateAction, findManyUser, updateActionToDone } from "@/app/model"
+import { getWorkflow, User, Workflow, Action, updateAction, findManyUser, updateActionToDone } from "@/lib/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,

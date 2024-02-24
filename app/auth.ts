@@ -1,7 +1,7 @@
 "use server"
 import { cookies } from "next/headers"
 import Image from "next/image"
-import { findUniqueUser } from "./model"
+import { findUniqueUser } from "@/lib/model"
 
 
 export async function submitAction(formData: FormData) {

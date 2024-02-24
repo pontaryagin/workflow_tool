@@ -22,7 +22,7 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { cookies } from "next/headers"
-import { User, findUniqueUser } from "@/app/model"
+import { User, findUniqueUser } from "@/lib/model"
 import { redirect, usePathname } from "next/navigation"
 import { getCurrentUser, logout } from "./auth"
 

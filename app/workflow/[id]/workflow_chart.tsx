@@ -14,7 +14,7 @@ import ReactFlow, {
 
 import 'reactflow/dist/style.css'
 import { Button } from '@/components/ui/button'
-import { Workflow } from '@/app/model'
+import { Workflow } from '@/lib/model'
 import { getActionGraph } from '../../graph'
 
 type Direction = 'TB' | 'LR'

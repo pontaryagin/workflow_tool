@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
-import { User, findManyWorkflow, findUniqueOrThrowUser, findUniqueUser, getUser, getWorkflow } from "@/app/model"
+import { User, findManyWorkflow, findUniqueOrThrowUser, findUniqueUser, getUser, getWorkflow } from "@/lib/model"
 import { redirect } from "next/navigation"
 import { toNumber } from "lodash"
 import { WorkflowsTable } from "./workflowsTable"

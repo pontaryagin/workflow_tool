@@ -1,7 +1,7 @@
 'use server'
 import { Prisma, PrismaClient } from "@prisma/client"
 import { createContext, useContext } from "react"
-import { getGraph, getActionGraph } from "./graph"
+import { getGraph, getActionGraph } from "../app/graph"
 import { sortBy } from 'lodash'
 import { prisma } from "@/lib/prisma"
 
