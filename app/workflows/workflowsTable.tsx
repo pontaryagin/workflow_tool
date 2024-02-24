@@ -26,6 +26,9 @@ import { Label } from "@/components/ui/label"
 import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
 import React from 'react'
+import { format } from 'date-fns'
+
+const TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
 export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
   return <>
@@ -34,6 +37,7 @@ export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
         <TableRow>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
+          <TableCell>Create Time</TableCell>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -46,6 +50,9 @@ export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
               <a href={ `/workflow/${workflow.id}` } className="text-blue-500 underline">
                 { workflow.name }
               </a>
+            </TableCell>
+            <TableCell>
+              { format(workflow.create_time, TIME_FORMAT) }
             </TableCell>
           </TableRow>
         )) }
