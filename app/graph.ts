@@ -2,7 +2,6 @@ import dagre from '@dagrejs/dagre'
 import {
   Node,
   Edge,
-  MarkerType,
 } from 'reactflow'
 import { Workflow } from '@/lib/model'
 
@@ -24,7 +23,6 @@ export const getGraph = (nodes_: Node[], edges: Edge[], isHorizontal: boolean, n
 }
 
 export const getActionGraph = (workflow: Workflow) => {
-  // const markerEnd = { type: MarkerType.ArrowClosed }
   const nodes = workflow.actions.map(action => ({
     id: action.id.toString(),
     data: { label: action.name },
@@ -36,7 +34,6 @@ export const getActionGraph = (workflow: Workflow) => {
         id: `${action.id}-${parent_action.id}`,
         source: parent_action.id.toString(),
         target: action.id.toString(),
-        // markerEnd: markerEnd
       })
     )
   ).flat()

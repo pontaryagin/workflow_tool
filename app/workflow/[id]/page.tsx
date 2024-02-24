@@ -13,7 +13,6 @@ import { toNumber } from "lodash"
 
 
 export const Page = async ({ params }: { params: { id: string } }) => {
-  console.log("params", params)
   const workflow = await getWorkflow(toNumber(params.id))
   const userId = cookies().get("name")?.value
   if (userId == null || userId === "") {

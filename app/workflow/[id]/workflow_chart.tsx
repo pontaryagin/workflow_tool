@@ -48,11 +48,18 @@ export const WorkflowChart = () => {
   const [isHorizontal, setIsHorizontal] = React.useState<boolean>(false)
   const { workflow } = useContext(WorkflowContext)
   const { nodes: initialNodes, edges: initialEdges } = getActionGraph(workflow)
-  const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+  let { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
     initialNodes,
     initialEdges,
     isHorizontal
   )
+  const markerEnd = { type: MarkerType.ArrowClosed }
+  layoutedEdges = layoutedEdges.map((edge) => {
+    return {
+      ...edge,
+      markerEnd: markerEnd,
+    }
+  })
   return <div style={ { height: 700 } }>
     <ReactFlow
       nodes={ layoutedNodes }
