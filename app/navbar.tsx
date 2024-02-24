@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { cookies } from "next/headers"
 import { User, findUniqueUser } from "@/app/model"
-import { redirect } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import { getCurrentUser, logout } from "./auth"
 
 export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
@@ -34,9 +34,9 @@ export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
-          <form action={ logout }>
-            <button type="submit">Logout</button>
-          </form>
+          <button onClick={ () => logout() } className="focus-visible:ring-0 w-full text-left">
+            Logout
+          </button>
         </DropdownMenuLabel>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -44,8 +44,12 @@ export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
 }
 
 export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error | null }) => {
+  const pathname = usePathname()
+  if (pathname == "/login") {
+    return null
+  }
   if (currentUser == null) {
-    redirect(`/login?next=${encodeURIComponent("/")}`)
+    redirect(`/login?next=${encodeURIComponent(pathname)}`)
   }
   if (currentUser instanceof Error) {
     return <main className="p-12">
@@ -53,7 +57,7 @@ export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error 
     </main>
   }
   return (
-    <header className="sticky top-0 z-50 bg-background/95 flex justify-between border-b border-border/50">
+    <header className="sticky top-0 z-50 bg-background/95 flex justify-between border-b border-border/60">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -73,7 +77,7 @@ export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error 
         </NavigationMenuList>
       </NavigationMenu>
       <NavigationMenu className="justify-self-right">
-        <NavigationMenuList className="justify-self-right">
+        <NavigationMenuList>
           <NavigationMenuItem >
             <div className="px-4 py-2">
               <DropdownMenuCheckboxes { ...{ currentUser } } />

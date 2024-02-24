@@ -11,7 +11,7 @@ export async function submitAction(formData: FormData) {
   }
 }
 
-export async function logout(formData: FormData) {
+export async function logout() {
   cookies().delete("name")
 }
 
