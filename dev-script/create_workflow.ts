@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { range } from '../utils/basic'
 import { prisma } from '@/lib/prisma'
-import { Temporal } from 'temporal-polyfill'
+import { add } from 'date-fns'
 
 (async () => {
   const users_ = range(0, 3).map(i => ({
@@ -12,11 +12,11 @@ import { Temporal } from 'temporal-polyfill'
 
   const users = await prisma.$transaction(users_.map(user => prisma.user.create({ data: user })))
 
-  const now = Temporal.Now.zonedDateTimeISO()
+  const now = new Date()
   const workflow = await prisma.workflow.create({
     data: {
       name: "test",
-      started_time: now.add({ minutes: 1 }).toString({ timeZoneName: "never" }),
+      started_time: add(now, { minutes: 1 }),
     }
   })
 
