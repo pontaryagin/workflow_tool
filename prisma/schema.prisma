@@ -18,12 +18,12 @@ enum Status {
 }
 
 model User {
-  id              String    @id
+  id              String   @id
   first_name      String?
   last_name       String?
-  assignedActions Action[]  @relation("ActionAssignee")
-  create_time     DateTime  @default(now())
-  update_time     DateTime?
+  assignedActions Action[] @relation("ActionAssignee")
+  create_time     DateTime @default(now())
+  update_time     DateTime @default(now())
 }
 
 model Action {
@@ -38,8 +38,8 @@ model Action {
   parents      Action[]  @relation("ActionDependency")
   children     Action[]  @relation("ActionDependency")
   create_time  DateTime  @default(now())
+  update_time  DateTime  @default(now())
   started_time DateTime?
-  update_time  DateTime?
 }
 
 model Workflow {
@@ -47,6 +47,6 @@ model Workflow {
   name         String
   actions      Action[]
   create_time  DateTime  @default(now())
+  update_time  DateTime  @default(now())
   started_time DateTime?
-  update_time  DateTime?
 }
