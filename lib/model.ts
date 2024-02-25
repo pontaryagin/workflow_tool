@@ -73,6 +73,29 @@ export const updateActionToDone = async (action_id: number) => {
   ])
 }
 
+export const createWorkflowFromSingleTask = async (name: string, description: string, assignees: string[]) => {
+  prisma.$transaction(async (tx) => {
+    const workflow = await tx.workflow.create({
+      data: {
+        name: name,
+        description: description,
+      }
+    })
+    for (const assignee of assignees) {
+      await tx.action.create({
+        data: {
+          name: name,
+          status: "ToDo",
+          memo: "",
+          assignee: { connect: { id: assignee } },
+          description: "",
+          workflow: { connect: { id: workflow.id } }
+        }
+      })
+    }
+  })
+}
+
 export const createAction = prisma.action.create
 export const updateAction = prisma.action.update
 export const findManyUser = prisma.user.findMany

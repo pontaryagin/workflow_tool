@@ -9,7 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getWorkflow, User, Workflow, Action, updateAction, findManyUser, updateActionToDone, WorkflowMin, createWorkflow, createAction } from "@/lib/model"
+import {
+  getWorkflow, User, Workflow, Action, updateAction, findManyUser, updateActionToDone,
+  WorkflowMin, createWorkflow, createAction, createWorkflowFromSingleTask
+} from "@/lib/model"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -39,52 +42,32 @@ import { FaExclamationTriangle } from "react-icons/fa"
 
 const TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
-
-
-const submitNewWorkflow = async (formData: FormData) => {
-  const name = formData.get('name')?.toString()
-  const description = formData.get('description')?.toString() || ""
-  const assignees = formData.getAll('assignee').map((id) => id.toString())
-  if (name == null) {
-    return "Name is required"
-  }
-  console.log("assignees", assignees)
-  if (assignees.length == 0 || assignees[0] == "") {
-    return "Assignee is required"
-  }
-  const workflow = await createWorkflow({
-    data: {
-      name: name,
-      description: description,
-    }
-  })
-  const actions = await Promise.all(assignees.map((assignee) => {
-    return createAction({
-      data: {
-        name: name,
-        status: "ToDo",
-        memo: "",
-        assignee: { connect: { id: assignee } },
-        description: "",
-        workflow: { connect: { id: workflow.id } }
-      }
-    })
-  }))
-
-}
-
 export function DialogNewWorkflow() {
   const [alert, setAlert] = React.useState<string | null>(null)
+  const submitNewWorkflow = async (formData: FormData) => {
+    const name = formData.get('name')?.toString()
+    const description = formData.get('description')?.toString() || ""
+    const assignees = formData.getAll('assignee').map((id) => id.toString())
+    if (name == null) {
+      setAlert("Name is required")
+      return
+    }
+    console.log("assignees", assignees)
+    if (assignees.length == 0 || assignees[0] == "") {
+      setAlert("Assignee is required")
+      return
+    }
+    await createWorkflowFromSingleTask(name, description, assignees)
+    setAlert(null)
+  }
+
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">New</Button>
+      <DialogTrigger asChild className="">
+        <Button variant="outline" className="">New</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form action={ async (formData: FormData) => {
-          const alert = await submitNewWorkflow(formData)
-          if (alert) { setAlert(alert) }
-        } }>
+        <form action={ submitNewWorkflow }>
           <DialogHeader>
             <DialogTitle>New Workflow</DialogTitle>
             <DialogDescription>
@@ -119,7 +102,7 @@ export function DialogNewWorkflow() {
             </div>
           </div>
           { alert &&
-            <div className="my-2 text-destructive border border-destructive p-2">
+            <div className="my-2 text-destructive border border-destructive p-3 rounded-md">
               <FaExclamationTriangle className="h-4 w-4" />
               { alert }
             </div>
@@ -136,7 +119,7 @@ export function DialogNewWorkflow() {
 
 export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
   return <>
-    <div className="flex justify-between ">
+    <div className="flex justify-end">
       <DialogNewWorkflow></DialogNewWorkflow>
     </div >
     <Table>
