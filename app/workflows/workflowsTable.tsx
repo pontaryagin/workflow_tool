@@ -57,7 +57,7 @@ export function DialogNewWorkflow() {
       setAlert("Assignee is required")
       return
     }
-    await createWorkflowFromSingleTask(name, description, assignees)
+    await createWorkflowFromSingleTask(name, "user0", description, assignees) // TODO: get current user 
     setAlert(null)
   }
 

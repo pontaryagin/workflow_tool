@@ -73,7 +73,7 @@ export const updateActionToDone = async (action_id: number) => {
   ])
 }
 
-export const createWorkflowFromSingleTask = async (name: string, description: string, assignees: string[]) => {
+export const createWorkflowFromSingleTask = async (name: string, creator: string, description: string, assignees: string[]) => {
   prisma.$transaction(async (tx) => {
     const workflow = await tx.workflow.create({
       data: {
@@ -81,18 +81,35 @@ export const createWorkflowFromSingleTask = async (name: string, description: st
         description: description,
       }
     })
-    for (const assignee of assignees) {
-      await tx.action.create({
-        data: {
-          name: name,
-          status: "ToDo",
-          memo: "",
-          assignee: { connect: { id: assignee } },
-          description: "",
-          workflow: { connect: { id: workflow.id } }
+    const actions = await Promise.all(
+      assignees.map(
+        async (assignee, i) => {
+          return await tx.action.create({
+            data: {
+              name: `Task ${i}`,
+              status: "ToDo",
+              memo: "",
+              assignee: { connect: { id: assignee } },
+              description: "",
+              workflow: { connect: workflow }
+            }
+          })
         }
-      })
-    }
+      )
+    )
+    await tx.action.create({
+      data: {
+        name: `Final Check`,
+        status: "ToDo",
+        memo: "",
+        assignee: { connect: { id: assignees[0] } },
+        description: "Final Check",
+        workflow: { connect: workflow },
+        parents: {
+          connect: actions
+        }
+      }
+    })
   })
 }
 
