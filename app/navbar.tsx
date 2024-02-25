@@ -43,18 +43,13 @@ export function DropdownMenuCheckboxes({ currentUser }: { currentUser: User }) {
   </>
 }
 
-export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | Error | null }) => {
+export const NavigationMenuDemo = ({ currentUser }: { currentUser: User | null }) => {
   const pathname = usePathname()
   if (pathname == "/login") {
     return null
   }
   if (currentUser == null) {
     redirect(`/login?next=${encodeURIComponent(pathname)}`)
-  }
-  if (currentUser instanceof Error) {
-    return <main className="p-12">
-      <div>{ currentUser.message }. Please register your account</div>
-    </main>
   }
   return (
     <header className="sticky top-0 z-50 bg-background/95 flex justify-between border-b border-border/60">

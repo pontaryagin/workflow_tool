@@ -27,11 +27,66 @@ import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
 import React from 'react'
 import { format } from 'date-fns'
+import { Textarea } from "@/components/ui/textarea"
+import AsyncSelect from 'react-select/async'
+import { loadUserList } from "@/app/user"
+import { IoArrowRedoSharp } from "react-icons/io5"
 
 const TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
+export function DialogNewWorkflow() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">New</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>New Workflow</DialogTitle>
+          <DialogDescription>
+            Create a new workflow from single task
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input id="name" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="description" className="text-right">
+              Description
+            </Label>
+            <Textarea id="description" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="assignee" className="text-right">
+              Name
+            </Label>
+            <AsyncSelect
+              name="assignee"
+              id="assignee"
+              isMulti
+              defaultOptions
+              loadOptions={ loadUserList }
+              className="col-span-3" ></AsyncSelect>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+
 export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
   return <>
+    <div className="flex justify-between ">
+      <DialogNewWorkflow></DialogNewWorkflow>
+    </div >
     <Table>
       <TableHeader>
         <TableRow>

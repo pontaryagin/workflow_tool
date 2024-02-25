@@ -1,7 +1,7 @@
 "use server"
 import { cookies } from "next/headers"
 import Image from "next/image"
-import { findUniqueUser } from "@/lib/model"
+import { findUniqueOrThrowUser, findUniqueUser } from "@/lib/model"
 
 
 export async function submitAction(formData: FormData) {
@@ -21,8 +21,5 @@ export async function getCurrentUser() {
     return null
   }
   const currentUser = await findUniqueUser({ where: { id: userId } })
-  if (currentUser == null) {
-    return new Error("User not found. userId=" + userId)
-  }
   return currentUser
 }

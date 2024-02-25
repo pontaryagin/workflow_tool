@@ -26,6 +26,7 @@ import { Label } from "@/components/ui/label"
 import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
 import React from 'react'
+import { loadUserList } from "@/app/user"
 
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
@@ -83,10 +84,6 @@ import { Textarea } from "@/components/ui/textarea"
 export const WorkflowTable = () => {
   const [isEditable, setIsEditable] = React.useState(false)
   const { workflow, setWorkflow, currentUser } = useContext(WorkflowContext)
-  const formatUser = (user?: User) => {
-    if (!user) return ""
-    return `${user.first_name} ${user.last_name}(${user.id})`
-  }
   const onBlurName = async (e: ChangeEvent, action: Action) => {
     const name = e.target.value
     if (action.name === name) return
@@ -128,23 +125,6 @@ export const WorkflowTable = () => {
       }
     })
     setWorkflow(await getWorkflow(workflow.id))
-  }
-  const loadUserList = async (inputValue: string) => {
-    const users = await findManyUser({
-      where: {
-        OR: [
-          { id: { startsWith: inputValue } },
-          { first_name: { startsWith: inputValue } },
-          { last_name: { startsWith: inputValue } },
-        ]
-      }
-    })
-    return users.map(
-      user => ({
-        value: user.id,
-        label: formatUser(user),
-      })
-    )
   }
   const onClickDone = async (action: Action) => {
     console.log("Market as done an action : ", action.name)
