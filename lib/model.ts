@@ -73,11 +73,13 @@ export const updateActionToDone = async (action_id: number) => {
   ])
 }
 
+export const createAction = prisma.action.create
 export const updateAction = prisma.action.update
 export const findManyUser = prisma.user.findMany
 export const findUniqueOrThrowUser = prisma.user.findUniqueOrThrow
 export const findUniqueUser = prisma.user.findUnique
 export const findManyWorkflow = prisma.workflow.findMany
+export const createWorkflow = prisma.workflow.create
 
 export const getUser = async (id: string) => {
   return await findUniqueUser({

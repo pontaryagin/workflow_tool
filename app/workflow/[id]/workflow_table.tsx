@@ -26,7 +26,7 @@ import { Label } from "@/components/ui/label"
 import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
 import React from 'react'
-import { loadUserList } from "@/app/user"
+import { formatUser, loadUserList } from "@/app/user"
 
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
