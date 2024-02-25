@@ -1,5 +1,3 @@
-'use client'
-
 import { User } from '@/lib/model'
 import { findManyUser } from '@/lib/model'
 

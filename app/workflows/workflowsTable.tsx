@@ -31,7 +31,7 @@ import React from 'react'
 import { format } from 'date-fns'
 import { Textarea } from "@/components/ui/textarea"
 import AsyncSelect from 'react-select/async'
-import { loadUserList } from "@/app/user"
+import { loadUserList } from "@/lib/user"
 import { IoArrowRedoSharp } from "react-icons/io5"
 import {
   Alert,
