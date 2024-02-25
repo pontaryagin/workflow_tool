@@ -83,8 +83,8 @@ export const createWorkflowFromSingleTask = async (name: string, creator: string
     })
     const actions = await Promise.all(
       assignees.map(
-        async (assignee, i) => {
-          return await tx.action.create({
+        (assignee, i) => {
+          return tx.action.create({
             data: {
               name: `Task ${i}`,
               status: "ToDo",
