@@ -17,6 +17,7 @@ import { add } from 'date-fns'
     data: {
       name: "test",
       started_time: add(now, { minutes: 1 }),
+      description: "",
     }
   })
 
@@ -26,7 +27,8 @@ import { add } from 'date-fns'
       status: "InProgress",
       memo: "memo",
       assignee: { connect: users[0] },
-      workflow: { connect: workflow }
+      workflow: { connect: workflow },
+      description: "",
     }
   })
   const node2 = await prisma.action.create({
@@ -35,7 +37,8 @@ import { add } from 'date-fns'
       status: "ToDo",
       memo: "memo2",
       assignee: { connect: users[1] },
-      workflow: { connect: workflow }, parents: { connect: [node,] }
+      workflow: { connect: workflow }, parents: { connect: [node,] },
+      description: "",
     }
   })
   const node3 = await prisma.action.create({
@@ -45,7 +48,8 @@ import { add } from 'date-fns'
       memo: "memo3",
       assignee: { connect: users[2] },
       workflow: { connect: workflow },
-      parents: { connect: [node, node2,] }
+      parents: { connect: [node, node2,] },
+      description: "",
     }
   })
 })()
