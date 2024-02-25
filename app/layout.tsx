@@ -7,7 +7,7 @@ import { getCurrentUser } from "./auth"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Workflow Builder",
+  title: "Workflow Builder",  // Task Stream
   description: "Workflow build tool",
 }
 
