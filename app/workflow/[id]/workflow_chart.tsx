@@ -10,6 +10,7 @@ import ReactFlow, {
   Edge,
   MarkerType,
   Connection,
+  Handle,
 } from 'reactflow'
 
 import 'reactflow/dist/style.css'
@@ -40,7 +41,7 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], isHorizontal: boolean
   })
   return { nodes: nodes_, edges }
 }
-
+import { css, cx } from '@emotion/css'
 import { WorkflowContext } from "../../context"
 import { get } from 'http'
 export const WorkflowChart = () => {
@@ -59,6 +60,11 @@ export const WorkflowChart = () => {
       markerEnd: markerEnd,
     }
   })
+  const hiddenHandle = css`
+    .react-flow__handle {
+      opacity: 0;
+    }
+  `
   return <div style={ { height: 700 } }>
     <ReactFlow
       nodes={ layoutedNodes }
@@ -70,7 +76,8 @@ export const WorkflowChart = () => {
       fitView
       proOptions={ { hideAttribution: true } }
       draggable={ false }
-      className='nowheel'
+      panOnDrag={ false }
+      className={ `nowheel ${hiddenHandle}` }
     >
       <Panel position="top-right">
         <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(false) }>vertical</Button>
@@ -78,5 +85,5 @@ export const WorkflowChart = () => {
       </Panel>
     </ReactFlow>
 
-  </div>
+  </div >
 }
