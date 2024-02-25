@@ -31,6 +31,7 @@ model Action {
   assignee     User      @relation("ActionAssignee", fields: [assigneeId], references: [id])
   assigneeId   String
   name         String
+  description  String
   status       Status
   memo         String
   workflow     Workflow  @relation(fields: [workflowId], references: [id])
@@ -45,6 +46,7 @@ model Action {
 model Workflow {
   id           Int       @id @default(autoincrement())
   name         String
+  description  String
   actions      Action[]
   create_time  DateTime  @default(now())
   update_time  DateTime  @default(now())
