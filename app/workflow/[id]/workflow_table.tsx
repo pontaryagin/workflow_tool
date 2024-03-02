@@ -167,7 +167,11 @@ export const WorkflowTable = () => {
                   options={ workflow.actions.map(action => ({ value: action.id, label: action.name })) }
                   onChange={ (e) => onChangeParents(e, action) }
                 />
-                : <>{ action.parents.map(action => (<Badge key={ action.id } variant="outline">{ action.name }</Badge>)) }</>
+                : <>{ action.parents.map(
+                  action => (<Badge key={ action.id } variant="outline">
+                    { action.name }
+                  </Badge>)
+                ) }</>
               }
             </TableCell>
             <TableCell><Badge variant="secondary">{ action.status }</Badge></TableCell>
@@ -177,9 +181,8 @@ export const WorkflowTable = () => {
                   defaultValue={ { value: action.assignee.id, label: formatUser(action.assignee) } }
                   defaultOptions
                   loadOptions={ loadUserList }
-                // onChange={ (e) => onChangeParents(e, action) }
                 />
-                : formatUser(action.assignee)
+                : <div className="text-sm">{ formatUser(action.assignee) }</div>
               }
             </TableCell>
             <TableCell className="whitespace-pre-wrap min-w-[9rem]">

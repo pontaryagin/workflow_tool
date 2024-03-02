@@ -137,7 +137,7 @@ export const WorkflowsTable = ({ workflows }: { workflows: WorkflowMin[] }) => {
               { workflow.id }
             </TableCell>
             <TableCell>
-              <a href={ `/workflow/${workflow.id}` } className="text-blue-500 underline">
+              <a href={ `/workflow/${workflow.id}` } className="font-medium text-primary hover:underline">
                 { workflow.name }
               </a>
             </TableCell>
