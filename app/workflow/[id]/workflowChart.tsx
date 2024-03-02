@@ -79,10 +79,10 @@ export const WorkflowChart = () => {
       panOnDrag={ false }
       className={ `nowheel ${hiddenHandle}` }
     >
-      <Panel position="top-right">
+      {/* <Panel position="top-right">
         <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(false) }>vertical</Button>
         <Button variant="secondary" className='mx-1' onClick={ () => setIsHorizontal(true) }>horizontal</Button>
-      </Panel>
+      </Panel> */}
     </ReactFlow>
 
   </div >

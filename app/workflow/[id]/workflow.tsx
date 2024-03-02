@@ -28,9 +28,10 @@ export const WorkflowMain = ({ workflow, currentUser }: { workflow: Workflow, cu
     <div>
       <WorkflowContext.Provider value={ context } >
         <WorkflowDescription workflow={ workflow_ } />
-        <h1 className="mt-10 mb-5">Workflow Table</h1>
+        {/* <h1 className="mt-10 mb-5 text-3xl fond-bold">Workflow Table</h1> */ }
+        <div className="mt-10"></div>
         <WorkflowTable />
-        <h1 className="mt-10 mb-5">Workflow Chart</h1>
+        {/* <h1 className="mt-10 mb-5  text-3xl fond-bold">Workflow Chart</h1> */ }
         <WorkflowChart />
       </WorkflowContext.Provider>
     </div >
