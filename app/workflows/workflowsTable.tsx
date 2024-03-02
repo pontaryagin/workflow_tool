@@ -44,6 +44,7 @@ const TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
 export function DialogNewWorkflow() {
   const [alert, setAlert] = React.useState<string | null>(null)
+  const [isOpen, setIsOpen] = React.useState(false)
   const submitNewWorkflow = async (formData: FormData) => {
     const name = formData.get('name')?.toString()
     const description = formData.get('description')?.toString() || ""
@@ -57,12 +58,13 @@ export function DialogNewWorkflow() {
       setAlert("Assignee is required")
       return
     }
-    await createWorkflowFromSingleTask(name, "user0", description, assignees) // TODO: get current user 
+    await createWorkflowFromSingleTask(name, "user0", description, assignees) // TODO: get current user
+    setIsOpen(false)
     setAlert(null)
   }
 
   return (
-    <Dialog>
+    <Dialog open={ isOpen } onOpenChange={ setIsOpen }>
       <DialogTrigger asChild className="">
         <Button variant="outline" className="">New</Button>
       </DialogTrigger>
