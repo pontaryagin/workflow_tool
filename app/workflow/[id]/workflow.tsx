@@ -8,7 +8,7 @@ import React from "react"
 const WorkflowDescription = ({ workflow }: { workflow: Workflow }) => {
   return <div>
     <h1 className="mb-5 text-large">{ }</h1>
-    <h1 className="text-4xl font-extrabold tracking-tight">
+    <h1 className="text-4xl font-extrabold">
       { workflow.name }
     </h1>
     <p className="mt-5">
