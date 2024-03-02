@@ -23,11 +23,13 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={ inter.className }>
         <NavigationMenuDemo { ...{ currentUser } }></NavigationMenuDemo>
-        { <ContextProvider contextValue={ { currentUser: currentUser! } }>
-          { children }
-        </ContextProvider>
+        { currentUser
+          ? <ContextProvider contextValue={ { currentUser: currentUser } }>
+            { children }
+          </ContextProvider>
+          : children
         }
       </body>
     </html>
-  ) // TODO : avoid use currentUser!
+  )
 }
