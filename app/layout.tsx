@@ -3,6 +3,8 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { NavigationMenuDemo } from "./navbar"
 import { getCurrentUser } from "./auth"
+import { UserContext } from "./context"
+import { ContextProvider } from "./contextHelper"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,8 +23,11 @@ export default async function RootLayout({
     <html lang="ja">
       <body className={ inter.className }>
         <NavigationMenuDemo { ...{ currentUser } }></NavigationMenuDemo>
-        { children }
+        { <ContextProvider contextValue={ { currentUser: currentUser! } }>
+          { children }
+        </ContextProvider>
+        }
       </body>
     </html>
-  )
+  ) // TODO : avoid use currentUser!
 }

@@ -39,12 +39,14 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 import { FaExclamationTriangle } from "react-icons/fa"
+import { UserContext } from "@/app/context"
 
 const TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
 export function DialogNewWorkflow() {
   const [alert, setAlert] = React.useState<string | null>(null)
   const [isOpen, setIsOpen] = React.useState(false)
+  const { currentUser } = React.useContext(UserContext)
   const submitNewWorkflow = async (formData: FormData) => {
     const name = formData.get('name')?.toString()
     const description = formData.get('description')?.toString() || ""
@@ -58,7 +60,7 @@ export function DialogNewWorkflow() {
       setAlert("Assignee is required")
       return
     }
-    await createWorkflowFromSingleTask(name, "user0", description, assignees) // TODO: get current user
+    await createWorkflowFromSingleTask(name, currentUser.id, description, assignees)
     setIsOpen(false)
     setAlert(null)
   }
