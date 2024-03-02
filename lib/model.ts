@@ -4,6 +4,8 @@ import { createContext, useContext } from "react"
 import { getGraph, getActionGraph } from "@/lib/graph"
 import { sortBy } from 'lodash'
 import { prisma } from "@/lib/prisma"
+import { workerData } from "worker_threads"
+import { Workflow } from "lucide-react"
 
 export type User = Prisma.UserGetPayload<{}>
 export type Workflow = Prisma.WorkflowGetPayload<{ include: { actions: { include: { assignee: true, parents: true } } } }>
@@ -36,6 +38,25 @@ export const getWorkflow = async (workflow_id: number) => {
   return workflow
 }
 
+export const startWorkflow = (workflow_id: number) => {
+  return prisma.action.updateMany({
+    where: {
+      workflow: {
+        id: workflow_id
+      },
+      parents: {
+        every: {
+          status: "Done"
+        }
+      },
+      status: "ToDo",
+    },
+    data: {
+      status: "InProgress",
+    }
+  })
+}
+
 export const updateActionToDone = async (action_id: number) => {
   let action = await prisma.action.findUniqueOrThrow({
     where: {
@@ -57,19 +78,7 @@ export const updateActionToDone = async (action_id: number) => {
         status: "Done",
       }
     }),
-    prisma.action.updateMany({
-      where: {
-        parents: {
-          every: {
-            status: "Done"
-          }
-        },
-        status: "ToDo",
-      },
-      data: {
-        status: "InProgress",
-      }
-    }),
+    startWorkflow(action.workflowId),
   ])
 }
 

@@ -27,6 +27,7 @@ import Select, { StylesConfig } from 'react-select'
 import { Prisma, PrismaClient } from "@prisma/client"
 import React from 'react'
 import { formatUser, loadUserList } from "@/lib/user"
+import { startWorkflow } from "@/lib/model"
 
 
 const ActionEditor = ({ action, workflow }: { action: Action, workflow: Workflow }) => {
@@ -135,8 +136,15 @@ export const WorkflowTable = () => {
     return ["ToDo", "InProgress"].includes(action.status)
   }
   return (<>
-    <div className="flex flex-row-reverse">
-      <Button onClick={ () => { setIsEditable(!isEditable) } } variant={ isEditable ? "outline" : "default" }>Edit</Button>
+    <div className="flex justify-end mb-1">
+      <Button onClick={ () => { startWorkflow(workflow.id) } } variant={ isEditable ? "outline" : "default" }
+        className="text-xs size-fit mx-1">
+        Start
+      </Button>
+      <Button onClick={ () => { setIsEditable(!isEditable) } } variant={ isEditable ? "outline" : "default" }
+        className="text-xs size-fit mx-1">
+        Edit
+      </Button>
     </div>
     <Table>
       <TableHeader>
