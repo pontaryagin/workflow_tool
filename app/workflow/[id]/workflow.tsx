@@ -1,6 +1,6 @@
 'use client'
-import { WorkflowChart } from "./workflow_chart"
-import { WorkflowTable } from "./workflow_table"
+import { WorkflowChart } from "./workflowChart"
+import { WorkflowTable } from "./workflowTable"
 import { User, Workflow } from "@/lib/model"
 import { WorkflowContext } from "../../context"
 import React from "react"
