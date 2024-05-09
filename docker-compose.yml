@@ -1,14 +1,5 @@
 version: '3'
 services:
-  # postgres-init:
-  #   image: postgres:14
-  #   volumes:
-  #     - "postgres_data:/data"
-  #   entrypoint:
-  #     - sh
-  #     - -c
-  #     - |
-  #       chown -R 1000:1000 /data
 
   db:
     # depends_on:
@@ -17,8 +8,8 @@ services:
 
     image: postgres:14
     container_name: postgres_next
-    ports:
-      - '${DB_PORT}:5432'
+    # ports:
+    #   - '${DB_PORT}:5432'
     # volumes:
     #   - type: bind
     #     source: ./db-data
@@ -30,5 +21,33 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+
+  next-app:
+    container_name: next-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    restart: always
+    tty: true # docker run -t
+    stdin_open: true # docker run -i
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    # networks:
+    #   - my_network
 volumes:
   db-data:
+
+    # Create a network, which allows containers to communicate
+    # with each other, by using their container name as a hostname
+    # > docker network create my_network
+    # networks:
+    #   my_network:
+    #     external: true
