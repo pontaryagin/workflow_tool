@@ -30,9 +30,6 @@ services:
 
     env_file:
       - .env
-    volumes:
-      - ./src:/app/src
-      - ./public:/app/public
     restart: always
     tty: true # docker run -t
     stdin_open: true # docker run -i
@@ -40,11 +37,8 @@ services:
       - 3000:3000
     depends_on:
       - db
-    # networks:
-    #   - my_network
 volumes:
   db-data:
-
     # Create a network, which allows containers to communicate
     # with each other, by using their container name as a hostname
     # > docker network create my_network
