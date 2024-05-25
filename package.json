@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
+  },
   "dependencies": {
     "@dagrejs/dagre": "^1.0.4",
     "@emotion/css": "^11.11.2",
