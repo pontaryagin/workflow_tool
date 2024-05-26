@@ -2,14 +2,8 @@ version: '3'
 services:
 
   db:
-    # depends_on:
-    #   postgres-init:
-    #     condition: service_completed_successfully
-
     image: postgres:14
     container_name: postgres_next
-    ports:
-      - '${DB_PORT_LOCAL:?not set}:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
@@ -22,17 +16,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    volumes:
-      - .:/app:cached
-      - /etc/passwd:/etc/passwd:ro
-      - /etc/group:/etc/group:ro
-    user: ${UID?:Define UID}:${GID:? Define GID}
+
     env_file:
-      - .env
+      - .env.prod
     restart: always
     tty: true # docker run -t
     ports:
-      - ${NEXT_PORT?:Input port for next app}:3000
+      - 3000:3000
     depends_on:
       - db
 volumes:

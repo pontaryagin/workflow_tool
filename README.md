@@ -1,30 +1,27 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Start database
+## Getting Started(Dev)
+### dot env
+- copy file
 ```
-docker compose start
-```
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.sample .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- update UID, GID
+- create docker-compose.override.yml
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### docker
+```
+docker compose up -d
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### prisma
+```
+docker compose run next-app npx prisma generate
+```
 
+## Deploy
+docker compose -f docker-compose.prod.yml up -d
 
 ## Add UI
 https://ui.shadcn.com/
