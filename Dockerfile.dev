@@ -3,23 +3,14 @@ FROM node:18
 
 WORKDIR /app
 
+RUN apt update && apt install -y iputils-ping net-tools procps
+
 # for devcontainer
 RUN chmod 777 /home
 
 # Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
-RUN npm ci
-
-COPY src ./src
-COPY public ./public
-COPY next.config.mjs .
-COPY tsconfig.json .
-COPY tailwind.config.ts .
-COPY components.json .
-COPY postcss.config.js .
 
 # create ./node_modules/.prisma folder
-RUN npx prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at run time
@@ -29,4 +20,3 @@ RUN npx prisma generate
 
 # Start Next.js in development mode based on the preferred package manager
 # CMD npm run dev
-CMD npm run dev
