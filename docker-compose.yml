@@ -29,7 +29,7 @@ services:
       #   GID: ${GID:?}
     volumes:
       - .:/app:cached
-      - ${HOME?:}/.ssh:${HOME?:}/.ssh:ro
+      - ${HOME?:}/.ssh:/root/.ssh:ro
       # - /etc/passwd:/etc/passwd:ro
       # - /etc/group:/etc/group:ro
       # - /home/ponta/.vscode-server/extensions:/home/ponta/.vscode-server/extensions:ro
