@@ -38,7 +38,7 @@ export const getWorkflow = async (workflow_id: number) => {
   return workflow
 }
 
-export const startWorkflow = (workflow_id: number) => {
+const startWorkflow_ = (workflow_id: number) => {
   return prisma.action.updateMany({
     where: {
       workflow: {
@@ -55,6 +55,10 @@ export const startWorkflow = (workflow_id: number) => {
       status: "InProgress",
     }
   })
+}
+
+export const startWorkflow = async (workflow_id: number) => {
+  return await startWorkflow_(workflow_id)
 }
 
 export const updateActionToDone = async (action_id: number) => {
@@ -78,7 +82,7 @@ export const updateActionToDone = async (action_id: number) => {
         status: "Done",
       }
     }),
-    startWorkflow(action.workflowId),
+    startWorkflow_(action.workflowId),
   ])
 }
 
