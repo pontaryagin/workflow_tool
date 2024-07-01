@@ -13,9 +13,9 @@ export type UserContextType = {
 }
 
 export const WorkflowContext = createContext<WorkflowContextType>(
-  null as unknown as WorkflowContextType // postpone initialization to WorkflowContext.Provider
+  undefined as never // postpone initialization to WorkflowContext.Provider
 )
 
 export const UserContext = createContext<UserContextType>(
-  null as unknown as UserContextType // postpone initialization to UserContext.Provider
+  undefined as never // postpone initialization to UserContext.Provider
 )
