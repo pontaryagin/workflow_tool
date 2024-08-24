@@ -7,7 +7,6 @@ services:
     #     condition: service_completed_successfully
 
     image: postgres:14
-    container_name: postgres_next
     ports:
       - '${DB_PORT:?not set}:5432'
     volumes:
@@ -18,7 +17,6 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
 
   next-app:
-    container_name: next-app
     build:
       context: .
       dockerfile: Dockerfile.dev
