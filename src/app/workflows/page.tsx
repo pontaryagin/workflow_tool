@@ -10,6 +10,8 @@ import { redirect } from "next/navigation"
 import { toNumber } from "lodash"
 import { WorkflowsTable } from "./workflowsTable"
 
+export const dynamic = "force-dynamic"
+
 const Page = async () => {
   const workflows = await findManyWorkflow({ orderBy: { id: "asc" } })
   return (

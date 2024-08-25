@@ -9,6 +9,8 @@ import { User, findManyWorkflow, findUniqueOrThrowUser, findUniqueUser, getUser,
 import { redirect } from "next/navigation"
 import { toNumber } from "lodash"
 
+export const dynamic = "force-dynamic"
+
 const Page = async () => {
   const workflows = await findManyWorkflow({ orderBy: { id: "asc" } })
   return (
