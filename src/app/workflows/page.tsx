@@ -10,7 +10,7 @@ import { redirect } from "next/navigation"
 import { toNumber } from "lodash"
 import { WorkflowsTable } from "./workflowsTable"
 
-export const Page = async () => {
+const Page = async () => {
   const workflows = await findManyWorkflow({ orderBy: { id: "asc" } })
   return (
     <main className="flex flex-col justify-between p-12">
