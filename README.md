@@ -45,3 +45,9 @@ Reset all data and migrate
 ```
 npx prisma migrate reset
 ```
+
+## deploy
+```
+podman-compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+podman-compose -f docker-compose.prod.yml --env-file .env.prod exec next-app npx prisma migrate deploy
+```
