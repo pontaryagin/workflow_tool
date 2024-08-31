@@ -20,23 +20,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      # args:
-      #   USERNAME: ${USERNAME:?}
-      #   GROUPNAME: ${GROUPNAME:?}
-      #   UID: ${UID:?}
-      #   GID: ${GID:?}
     volumes:
       - .:/app:cached
-      # - ${HOME?:}/.ssh:/root/.ssh:ro
-      # - /etc/passwd:/etc/passwd:ro
-      # - /etc/group:/etc/group:ro
-      # - /home/ponta/.vscode-server/extensions:/home/ponta/.vscode-server/extensions:ro
     env_file:
       - .env
     restart: always
     tty: true # docker run -t
     ports:
       - ${NEXT_PORT?:Input port for next app}:3000
+      - ${PRISMA_STUDIO_PORT?:}:5555
     depends_on:
       - db
 volumes:
